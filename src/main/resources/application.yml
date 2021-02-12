@@ -1,0 +1,105 @@
+server:
+  port: 8080
+
+spring:
+
+  profiles:
+    active: staging
+    
+  jersey:
+    application-path: /api
+    
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE
+    
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      javax:
+        persistence:
+          sharedCache:
+            mode: ENABLE_SELECTIVE
+      hibernate:
+        format_sql: true
+        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+        temp:
+          use_jdbc_metadata_defaults: false
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+          region:
+            factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+          
+  cache:
+    ehcache:
+      config: classpath:ehcache.xml
+
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-admin-password: 
+        web-allow-others: true
+      
+  # Embedded ActiveMQ Configuration Example
+  activemq:
+    broker-url: vm://embedded?broker.persistent=false&broker.useShutdownHook=false
+    in-memory: true
+    non-blocking-redelivery: true
+    packages:
+      trust-all: false
+      trusted: by.iba.itd
+    pool:
+      block-if-full: true
+      block-if-full-timeout: -1
+      enabled: false
+      idle-timeout: 30000
+      max-connections: 1
+      max-sessions-per-connection: 500
+      time-between-expiration-check: -1
+      use-anonymous-producers: true
+        
+  # Spring JMS Settings
+  jms:
+    listener:
+      acknowledge-mode: auto
+      auto-startup: true
+      concurrency: 5
+      max-concurrency: 10
+    pub-sub-domain: true
+    template:
+      default-destination:
+      delivery-mode: non-persistent
+      priority: 100
+      qos-enabled: true
+      receive-timeout: 1000
+      time-to-live: 36000
+      
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+keycloak:
+  auth-server-url: http://localhost:9080/auth/
+  realm: coworking
+  resource: coworking
+  ssl-required: none
+  cors: true
+  bearer-only: true
+  credentials:
+    secret: bb4509f6-787e-4eb7-9988-31a7482a49e5
+  principal-attribute: preferred_username
+        
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api/openapi.json
+  swagger-ui:
+    path: /swagger-ui.html
+
+      

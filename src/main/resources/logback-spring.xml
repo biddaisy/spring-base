@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="LOGS" value="./logs" />
+
+	<appender name="Console"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable</Pattern>
+		</layout>
+	</appender>
+
+    <!-- 
+	<appender name="RollingFile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOGS}/spring-boot-logger.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+		</encoder>
+
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOGS}/archived/spring-boot-logger-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="GELF"
+		class="de.siegmar.logbackgelf.GelfUdpAppender">
+		<graylogHost>127.0.0.1</graylogHost>
+		<graylogPort>12201</graylogPort>
+		<maxChunkSize>508</maxChunkSize>
+		<useCompression>true</useCompression>
+		<encoder class="de.siegmar.logbackgelf.GelfEncoder">
+			<originHost>127.0.0.1</originHost>
+			<includeRawMessage>false</includeRawMessage>
+			<includeMarker>true</includeMarker>
+			<includeMdcData>true</includeMdcData>
+			<includeCallerData>false</includeCallerData>
+			<includeRootCauseData>false</includeRootCauseData>
+			<includeLevelName>false</includeLevelName>
+			<shortPatternLayout
+				class="ch.qos.logback.classic.PatternLayout">
+				<pattern>%m%nopex</pattern>
+			</shortPatternLayout>
+			<fullPatternLayout
+				class="ch.qos.logback.classic.PatternLayout">
+				<pattern>%m%n</pattern>
+			</fullPatternLayout>
+			<staticField>app_name:backend</staticField>
+			<staticField>os_arch:${os.arch}</staticField>
+			<staticField>os_name:${os.name}</staticField>
+			<staticField>os_version:${os.version}</staticField>
+		</encoder>
+	</appender>
+    -->
+     
+	<!-- LOG everything at INFO level -->
+	<root level="info">
+<!--
+ 		<appender-ref ref="RollingFile" />
+-->
+		<appender-ref ref="Console" />
+	</root>
+
+	<!-- LOG "by.iba*" at DEBUG level -->
+	<logger name="by.iba" level="debug" additivity="false">
+<!-- 
+		<appender-ref ref="RollingFile" />
+ -->		
+		<appender-ref ref="Console" />
+	</logger>
+
+</configuration>
